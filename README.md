@@ -42,7 +42,7 @@ storePath - path ( which can be relative to package.json ) where access tokens f
 
 Optional properties :
 
-indent - to be applied to any file writing of json objects such as package.json
+indent - to be applied to any file writing of json objects ( third argument to JSON.stringify ) such as package.json
 
 ##### clientId and clientSecret
 
