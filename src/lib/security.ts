@@ -13,18 +13,17 @@ export interface IClientStore{
     getClientIdAndSecret():Promise<ClientIdAndSecret>
 }
 export interface ISecurity{
-    getCredentialsManager():ICredentialsManager
-    getClientStore():IClientStore
+    credentialsManager:ICredentialsManager
+    clientStore:IClientStore
 }
 export interface ISecurityFactory<T>{
     getSecurity(arg:T):ISecurity
-
 }
 export async function setAuthenticatedClient<T>(securityFactoryOptions:T,securityFactory:ISecurityFactory<T>,scope:string|string[]){
                 
     const security=securityFactory.getSecurity(securityFactoryOptions);
-    const credentialsManager=security.getCredentialsManager();
-    const clientStore=security.getClientStore();
+    const credentialsManager=security.credentialsManager;
+    const clientStore=security.clientStore;
     return Promise.all([credentialsManager.getCredentials(),clientStore.getClientIdAndSecret()]).then(([credentials,clientIdAndSecret])=>{
         return getAuthenticatedClient(credentials,clientIdAndSecret,(creds)=>{
             let eventReason="First access";

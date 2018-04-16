@@ -12,15 +12,12 @@ export interface PostResourceBase{
     customMetadata?:string
 }
 export interface Post extends PostResourceBase{
-    contentFilePath:string,
     id?:string,
     url?:string,
     isDraft?:boolean
 }
 export interface BloggerPost extends Post{
     blogId:string
-    
-    
 }
 export interface IBloggerPostManager<T extends BloggerPost>{
     get():Promise<T>,

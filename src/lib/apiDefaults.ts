@@ -134,17 +134,14 @@ class DefaultClientStore implements IClientStore {
     }
 }
 class DefaultSecurity implements ISecurity{
+    credentialsManager: ICredentialsManager;
+    clientStore: IClientStore;
     private storeManager:IStoreManager
     constructor(private bloggerPost:DefaultBloggerPost){ 
         this.storeManager=new FileStoreManager(getPathRelativeToPackageJson(bloggerPost.storePath),getIndent(bloggerPost));
+        this.credentialsManager=new DefaultCredentialsManager(this.storeManager,this.bloggerPost.blogId);
+        this.clientStore=new DefaultClientStore(this.storeManager,this.bloggerPost)
     }
-    getCredentialsManager(): ICredentialsManager {
-        return new DefaultCredentialsManager(this.storeManager,this.bloggerPost.blogId);
-    }
-    getClientStore(): IClientStore {
-        return new DefaultClientStore(this.storeManager,this.bloggerPost)
-    }
-   
 }
 export class DefaultSecurityFactory implements ISecurityFactory<DefaultBloggerPost>{
     getSecurity(bloggerPost:DefaultBloggerPost):ISecurity{
