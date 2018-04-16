@@ -23,7 +23,7 @@ bloggerPost-insertAsDraft\
 bloggerPost-delete\
 bloggerPost-revert\
 bloggerPost-publish\
-bloggerPost-publishAndView\
+bloggerPost-publishAndView
 
 #### Requirements
 
@@ -71,7 +71,7 @@ title
 
 titleLink\
 labels\
-customMetadata\
+customMetadata
 
 For operations that require the existence of a post ( all other than insert ):
 
