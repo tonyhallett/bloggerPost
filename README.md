@@ -90,7 +90,54 @@ The api is simple:
 
 ```typescript
 export declare function createAPI<T extends BloggerPost>(bloggerPostManager: IBloggerPostManager<T>, securityFactory: ISecurityFactory<T>, resourceProvider: IResourceProvider<T>, conditionFailMessages?: ConditionFailMessages): BloggerPoster;
+
+export interface BloggerPoster{
+     update():Promise<void>
+     updateAndView():Promise<void>
+     updateRevert():Promise<void>
+     updatePublish():Promise<void>
+     updatePublishAndView():Promise<void>
+     insert():Promise<void>
+     insertAndView():Promise<void>
+     insertAsDraft():Promise<void>
+     delete():Promise<void>
+     revert():Promise<void>
+     publish():Promise<void>
+     publishAndView():Promise<void>
+}
 ```
+
+#### ConditionFailMessages
+
+```typescript
+export interface ConditionFailMessages{
+    noPostToUpdate:string,
+    noPostToDelete:string,
+    noPostToPublish:string,
+    noPostToRevert:string,
+    postAlreadyPublished:string,
+    postAlreadyDraft:string,
+    postAlreadyInserted:string
+}
+```
+
+The conditionFailMessages argument is optional and defaults to:
+
+```typescript
+const noPostTo="There is no post to ";
+const postAlready="The post is already ";
+const conditionFailMessages:ConditionFailMessages={
+    noPostToUpdate:noPostTo + "update",
+    noPostToDelete:noPostTo + "delete",
+    noPostToPublish:noPostTo + "publish",
+    noPostToRevert:noPostTo + "revert",
+    postAlreadyPublished:postAlready + "published",
+    postAlreadyDraft:postAlready + "in the draft state",
+    postAlreadyInserted:"The post has been inserted, did you mean update?"
+}
+```
+
+The messages are written to the console when a BloggerPoster method is called unnecessarily.
 
 #### IBloggerPostManager / BloggerPost
 
@@ -125,7 +172,7 @@ export interface IBloggerPostManager<T extends BloggerPost>{
 
 #### BloggerPost derivation
 
-Your derivation, returned from the IBloggerPostManager, provides what is necessary for the other arguments to function properly :
+Your derivation, returned from the IBloggerPostManager, provides what is necessary for the securityFactory and resourceProvider arguments to function properly :
 
 The IResourceProvider provides the string of html that is required for inserts and updates.\
 The default reads the contents of the file specified by the contentFilePath.
@@ -168,7 +215,7 @@ export interface ISecurity{
     clientStore:IClientStore
 }
 
-export interface ISecurityFactory<T>{
+export interface ISecurityFactory<T extends BloggerPost>{
     getSecurity(arg:T):ISecurity
 }
 ```

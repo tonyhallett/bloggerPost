@@ -1,6 +1,7 @@
 import { Credentials } from 'google-auth-library/build/src/auth/credentials';
 import {OAuth2Client} from 'google-auth-library/build/src/auth/oauth2client'
 import { getAuthenticatedClient, ClientIdAndSecret } from './authenticatedClient';
+import { BloggerPost } from './apiTypes';
 export {ClientIdAndSecret} from './authenticatedClient';
 export {Credentials} from 'google-auth-library/build/src/auth/credentials';
 
@@ -16,10 +17,10 @@ export interface ISecurity{
     credentialsManager:ICredentialsManager
     clientStore:IClientStore
 }
-export interface ISecurityFactory<T>{
+export interface ISecurityFactory<T extends BloggerPost>{
     getSecurity(arg:T):ISecurity
 }
-export async function setAuthenticatedClient<T>(securityFactoryOptions:T,securityFactory:ISecurityFactory<T>,scope:string|string[]){
+export async function setAuthenticatedClient<T extends BloggerPost>(securityFactoryOptions:T,securityFactory:ISecurityFactory<T>,scope:string|string[]){
                 
     const security=securityFactory.getSecurity(securityFactoryOptions);
     const credentialsManager=security.credentialsManager;
