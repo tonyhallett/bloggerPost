@@ -2,15 +2,17 @@
   "name": "blogger_post",
   "version": "1.0.0",
   "description": "cli and api for managing blogger posts with the blogger api v3 with authentication. The cli is the default use of the api with clientId and clientSecret specified using package.json or through environment variables and storage of tokens specified in the package.json.",
-  "keywords":["blogger"],
-  "directories":{
-    "lib":"dist/lib"
+  "keywords": [
+    "blogger"
+  ],
+  "directories": {
+    "lib": "dist/lib"
   },
   "main": "dist/lib/index.js",
-  "types":"dist/lib/index.d.ts",
+  "types": "dist/lib/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile":"tsc --watch"
+    "compile": "tsc --watch"
   },
   "bin": {
     "bloggerPost-update": "./dist/bin/update.js",
@@ -27,7 +29,7 @@
     "bloggerPost-publishAndView": "./dist/bin/publishAndView.js"
   },
   "author": {
-   "name": "Tony Hallett" 
+    "name": "Tony Hallett"
   },
   "license": "ISC",
   "dependencies": {

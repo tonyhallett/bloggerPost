@@ -1,4 +1,5 @@
 import * as fsextra from 'fs-extra'
+import * as path from 'path';
 import {ensureAbsoluteRelativeTo} from './fileHelpers';
 import { IBloggerPostManager,IResourceProvider, BloggerPost, ISecurityFactory, ISecurity, ICredentialsManager, IClientStore, ClientIdAndSecret, Credentials } from "./apiTypes";
 export interface DefaultBloggerPost extends BloggerPost{
@@ -12,8 +13,10 @@ export interface DefaultBloggerPost extends BloggerPost{
 interface BloggerPackageJson{
     bloggerPost:DefaultBloggerPost
 }
-var packageJsonPath=require.resolve(__dirname + "/package.json");
-var packageJson:BloggerPackageJson = require(__dirname + '/package.json');
+const directory=process.cwd();
+const packageJsonSearchPath=path.resolve(directory,"package.json");
+const packageJsonPath=require.resolve(packageJsonSearchPath);
+const packageJson:BloggerPackageJson = require(packageJsonSearchPath);
 
 const defaultSpaceIndent=2;
 function getIndent(bloggerPost:DefaultBloggerPost){
