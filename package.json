@@ -1,5 +1,5 @@
 {
-  "name": "blogger_post",
+  "name": "blogger-post",
   "version": "1.0.0",
   "description": "cli and api for managing blogger posts with the blogger api v3 with authentication. The cli is the default use of the api with clientId and clientSecret specified using package.json or through environment variables and storage of tokens specified in the package.json.",
   "keywords": [
@@ -31,16 +31,23 @@
   "author": {
     "name": "Tony Hallett"
   },
+  "homepage": "https://github.com/tonyhallett/bloggerPost",
+  "bugs": "https://github.com/tonyhallett/bloggerPost/issues",
+  "repository": "github:tonyhallett/bloggerPost",
+  "engines": {
+    "node": ">=6.5"
+  },
   "license": "ISC",
   "dependencies": {
-    "@types/fs-extra": "^5.0.2",
-    "@types/node": "^7.0.60",
-    "@types/opn": "^5.1.0",
     "crypto-random-string": "^1.0.0",
     "fs-extra": "^5.0.0",
     "googleapis": "^28.1.0",
-    "make-runnable": "^1.3.6",
     "opn": "^5.3.0",
     "portfinder": "^1.0.13"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^5.0.2",
+    "@types/node": "^7.0.60",
+    "@types/opn": "^5.1.0"
   }
 }

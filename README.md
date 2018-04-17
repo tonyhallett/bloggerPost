@@ -6,7 +6,19 @@ BloggerPost is a node command line interface as well as an api for authenticatin
 
 **You provide the clientId and clientSecret of your own application.**
 
+## Installation
+
+command line :
+
+npm install -g blogger-post
+
+api :
+
+npm install --save blogger-post
+
 The API has been written in typescript, the definition files are alongside the javascript.
+
+## Usage
 
 ### Command line
 
