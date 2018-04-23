@@ -1,6 +1,6 @@
 {
   "name": "blogger-post",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "cli and api for managing blogger posts with the blogger api v3 with authentication. The cli is the default use of the api with clientId and clientSecret specified using package.json or through environment variables and storage of tokens specified in the package.json.",
   "keywords": [
     "blogger"
