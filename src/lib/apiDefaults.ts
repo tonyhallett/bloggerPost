@@ -51,7 +51,15 @@ interface IStoreManager{
 class FileStoreManager implements IStoreManager {
     constructor(private storePath:string,private indent:string|number){}
     getStore(): Promise<Store> {
-        return fsextra.readJSON(this.storePath) as Promise<Store>;
+        return fsextra.pathExists(this.storePath).then(exists=>{
+            if(exists){
+                return fsextra.readJSON(this.storePath) as Promise<Store>;
+            }else{
+                return this.updateStore({}).then(()=>({}));
+            }
+            
+        })
+        
     }
     updateStore(store: Store): Promise<void> {
         return fsextra.writeJSON(this.storePath,store,{spaces:this.indent});
