@@ -18,7 +18,7 @@ npm install --save blogger-post
 
 The API has been written in typescript, the definition files are alongside the javascript.
 
-**Alternatively there is a [yeoman generator](https://www.npmjs.com/package/generator-bloggerpost) **
+**Alternatively there is a [yeoman generator](https://www.npmjs.com/package/generator-bloggerpost)**
 
 ## Usage
 
