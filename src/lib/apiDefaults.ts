@@ -2,6 +2,7 @@ import * as fsextra from 'fs-extra'
 import * as path from 'path';
 import {ensureAbsoluteRelativeTo} from './fileHelpers';
 import { IBloggerPostManager,IResourceProvider, BloggerPost, ISecurityFactory, ISecurity, ICredentialsManager, IClientStore, ClientIdAndSecret, Credentials } from "./apiTypes";
+import { ExtendedCredentials } from './security';
 export interface DefaultBloggerPost extends BloggerPost{
     storePath:string,
     clientPath?:string,
@@ -66,7 +67,7 @@ class FileStoreManager implements IStoreManager {
     }
 }
 interface BlogCredentials{
-    [id:string]:Credentials
+    [id:string]:ExtendedCredentials
 }
 interface Store{
     clientId?:string,
@@ -77,7 +78,7 @@ interface Store{
 class DefaultCredentialsManager implements ICredentialsManager{
     
     constructor(private storeManager:IStoreManager,private blogId:string){}
-    setCredentials(credentials: Credentials):Promise<void> {
+    setCredentials(credentials: ExtendedCredentials):Promise<void> {
         return this.storeManager.getStore().then(store=>{
             let storeCredentials:BlogCredentials
             if(store.credentials){
@@ -94,7 +95,7 @@ class DefaultCredentialsManager implements ICredentialsManager{
         
     }
     
-    getCredentials(): Promise<Credentials|undefined> {
+    getCredentials(): Promise<ExtendedCredentials|undefined> {
         return this.storeManager.getStore().then(store=>{
             if(store.credentials){
                 return store.credentials[this.blogId];

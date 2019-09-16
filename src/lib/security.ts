@@ -5,9 +5,13 @@ import { BloggerPost } from './apiTypes';
 export {ClientIdAndSecret} from './authenticatedClient';
 export {Credentials} from 'google-auth-library/build/src/auth/credentials';
 
+export type ExtendedCredentials = Credentials&{
+    lastRefresh: Date
+}
+
 export interface ICredentialsManager{
-    setCredentials(credentials:Credentials):Promise<void>
-    getCredentials():Promise<Credentials|undefined>
+    setCredentials(credentials:ExtendedCredentials):Promise<void>
+    getCredentials():Promise<ExtendedCredentials|undefined>
 }
 
 export interface IClientStore{
@@ -26,11 +30,21 @@ export async function setAuthenticatedClient<T extends BloggerPost>(securityFact
     const credentialsManager=security.credentialsManager;
     const clientStore=security.clientStore;
     return Promise.all([credentialsManager.getCredentials(),clientStore.getClientIdAndSecret()]).then(([credentials,clientIdAndSecret])=>{
-        return getAuthenticatedClient(credentials,clientIdAndSecret,(creds)=>{
+        let forceAuthentication=false;
+        if(credentials){
+            const now = new Date();
+            const timeDiff  = (now as any) - (credentials.lastRefresh as any);
+            const days  = timeDiff / (1000 * 60 * 60 * 24);
+            console.log("days since last access token refresh");
+            if(days>88){
+                forceAuthentication = true;
+            }
+        }
+        return getAuthenticatedClient(credentials,clientIdAndSecret,forceAuthentication,(creds)=>{
             let eventReason="First access";
             if(credentials){
                 eventReason="Refresh"
-                creds.refresh_token=credentials.refresh_token;
+                //creds.refresh_token=credentials.refresh_token;
             }
             
             console.group("on tokens event: " + eventReason);
@@ -44,7 +58,14 @@ export async function setAuthenticatedClient<T extends BloggerPost>(securityFact
                 console.log("refresh token: " + creds.refresh_token);
             console.groupEnd();
             
-            credentialsManager.setCredentials(creds);
+            credentialsManager.setCredentials({
+                access_token:creds.access_token,
+                token_type: creds.token_type,
+                id_token:creds.id_token,
+                expiry_date:creds.expiry_date,
+                lastRefresh:new Date(),
+                refresh_token:creds.refresh_token
+            });
         },scope);
     })
 }

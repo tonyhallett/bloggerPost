@@ -8,16 +8,16 @@ export interface ClientIdAndSecret{
     clientSecret:string
 
 }
-export async function getAuthenticatedClient(credentials:Credentials|undefined,clientIdAndSecret:ClientIdAndSecret,onTokens:(credentials:Credentials)=>any,scope:string|string[]){
+export async function getAuthenticatedClient(credentials:Credentials|undefined,clientIdAndSecret:ClientIdAndSecret,forceAuthentication:boolean,onTokens:(credentials:Credentials)=>any,scope:string|string[]){
                     
     let oauthClient:OAuth2Client;
         
     let authenticatedClient:Promise<void>;
-    if(credentials){
+    if(!forceAuthentication||credentials!==undefined){
         oauthClient=new google.auth.OAuth2(clientIdAndSecret);
         oauthClient.on("tokens",onTokens);
         console.log("setting credentials from before");
-        oauthClient.setCredentials(credentials)
+        oauthClient.setCredentials(credentials!)
         authenticatedClient=Promise.resolve();
     }else{
         
