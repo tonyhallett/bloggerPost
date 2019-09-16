@@ -37,31 +37,11 @@ export async function setAuthenticatedClient<T extends BloggerPost>(securityFact
             then.setTime(credentials.lastRefreshMs);
             const timeDiff  = (now as any) - (then as any);
             const days  = timeDiff / (1000 * 60 * 60 * 24);
-            console.log("days since last access token refresh: " + days);
             if(days>88){
-                console.log("forcing authentication");
                 forceAuthentication = true;
-            }else{
-                console.log("not forcing authentication")
             }
         }
         return getAuthenticatedClient(credentials,clientIdAndSecret,forceAuthentication,(creds)=>{
-            let eventReason="First access";
-            if(credentials){
-                eventReason="Refresh"
-            }
-            
-            console.group("on tokens event: " + eventReason);
-                console.log("access token: " + creds.access_token);
-                if(creds.expiry_date){
-                    const expiryDate=new Date();
-                    expiryDate.setTime(creds.expiry_date);
-                    console.log("expiry date: " + expiryDate);
-                }
-                
-                console.log("refresh token: " + creds.refresh_token);
-            console.groupEnd();
-            
             credentialsManager.setCredentials({
                 access_token:creds.access_token,
                 token_type: creds.token_type,

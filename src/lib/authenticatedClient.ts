@@ -9,11 +9,15 @@ export interface ClientIdAndSecret{
 
 }
 export async function getAuthenticatedClient(credentials:Credentials|undefined,clientIdAndSecret:ClientIdAndSecret,forceAuthentication:boolean,onTokens:(credentials:Credentials)=>any,scope:string|string[]){
-                    
+    
     let oauthClient:OAuth2Client;
         
     let authenticatedClient:Promise<void>;
     if(forceAuthentication||credentials===undefined){
+        if(forceAuthentication){
+            console.log("authenticating as refresh token expired");
+        }
+        
         const redirection=await getRedirectUrlAndPort();
         oauthClient=new google.auth.OAuth2({clientId:clientIdAndSecret.clientId,clientSecret:clientIdAndSecret.clientSecret,redirectUri:redirection.redirectUrl});
         oauthClient.on("tokens",onTokens);
