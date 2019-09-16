@@ -207,7 +207,7 @@ export interface Credentials {
     access_token?: string | null;
     token_type?: string | null;
     id_token?: string | null;
-    lastRefreshMs?:string
+    lastRefreshMs?:number
 }
 
 export interface ClientIdAndSecret{
