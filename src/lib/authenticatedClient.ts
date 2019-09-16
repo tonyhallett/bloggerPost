@@ -13,19 +13,19 @@ export async function getAuthenticatedClient(credentials:Credentials|undefined,c
     let oauthClient:OAuth2Client;
         
     let authenticatedClient:Promise<void>;
-    if(!forceAuthentication||credentials!==undefined){
-        oauthClient=new google.auth.OAuth2(clientIdAndSecret);
-        oauthClient.on("tokens",onTokens);
-        console.log("setting credentials from before");
-        oauthClient.setCredentials(credentials!)
-        authenticatedClient=Promise.resolve();
-    }else{
-        
+    if(forceAuthentication||credentials===undefined){
         const redirection=await getRedirectUrlAndPort();
         oauthClient=new google.auth.OAuth2({clientId:clientIdAndSecret.clientId,clientSecret:clientIdAndSecret.clientSecret,redirectUri:redirection.redirectUrl});
         oauthClient.on("tokens",onTokens);
         
         authenticatedClient=authenticateClient(oauthClient,redirection.freePort,scope);
+    }else{
+        oauthClient=new google.auth.OAuth2(clientIdAndSecret);
+        oauthClient.on("tokens",onTokens);
+        console.log("setting credentials from before");
+        oauthClient.setCredentials(credentials!)
+        authenticatedClient=Promise.resolve();
     }
+    
     return authenticatedClient.then(()=>oauthClient);
 }
