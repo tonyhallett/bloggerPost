@@ -44,7 +44,6 @@ export async function setAuthenticatedClient<T extends BloggerPost>(securityFact
             let eventReason="First access";
             if(credentials){
                 eventReason="Refresh"
-                //creds.refresh_token=credentials.refresh_token;
             }
             
             console.group("on tokens event: " + eventReason);
