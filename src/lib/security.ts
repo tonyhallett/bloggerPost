@@ -6,7 +6,7 @@ export {ClientIdAndSecret} from './authenticatedClient';
 export {Credentials} from 'google-auth-library/build/src/auth/credentials';
 
 export type ExtendedCredentials = Credentials&{
-    lastRefresh: string// Date
+    lastRefreshMs: number
 }
 
 export interface ICredentialsManager{
@@ -33,7 +33,9 @@ export async function setAuthenticatedClient<T extends BloggerPost>(securityFact
         let forceAuthentication=false;
         if(credentials){
             const now = new Date();
-            const timeDiff  = (now as any) - (Date.parse(credentials.lastRefresh));
+            const then = new Date();
+            then.setTime(credentials.lastRefreshMs);
+            const timeDiff  = (now as any) - (then as any);
             const days  = timeDiff / (1000 * 60 * 60 * 24);
             console.log("days since last access token refresh");
             if(days>88){
@@ -62,7 +64,7 @@ export async function setAuthenticatedClient<T extends BloggerPost>(securityFact
                 token_type: creds.token_type,
                 id_token:creds.id_token,
                 expiry_date:creds.expiry_date,
-                lastRefresh:new Date().toString(),
+                lastRefreshMs:new Date().getTime(),
                 refresh_token:creds.refresh_token
             });
         },scope);
