@@ -37,9 +37,12 @@ export async function setAuthenticatedClient<T extends BloggerPost>(securityFact
             then.setTime(credentials.lastRefreshMs);
             const timeDiff  = (now as any) - (then as any);
             const days  = timeDiff / (1000 * 60 * 60 * 24);
-            console.log("days since last access token refresh");
+            console.log("days since last access token refresh: " + days);
             if(days>88){
+                console.log("forcing authentication");
                 forceAuthentication = true;
+            }else{
+                console.log("not forcing authentication")
             }
         }
         return getAuthenticatedClient(credentials,clientIdAndSecret,forceAuthentication,(creds)=>{
